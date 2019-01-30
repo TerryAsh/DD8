@@ -3,9 +3,12 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 
 export default class ScorePage extends React.Component {
-  static navigationOptions = {
-    title: 'Score',
+  static navigationOptions = ({navigation})=> {
+  	const item = navigation.getParam('name',[]);
+  	return {title: item[0],
+  	};
   };
+
   render() {
   	const navigation = this.props.navigation;
   	let username = navigation.getParam('name','defaultName1');

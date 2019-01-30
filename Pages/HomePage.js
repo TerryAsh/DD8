@@ -1,6 +1,6 @@
 
 import React, {Component} from 'react';
-import {TouchableOpacity,FlatList ,Platform, StyleSheet, Text, View,Button} from 'react-native';
+import {TouchableOpacity,FlatList ,Platform, Image,StyleSheet, Text, View,Button} from 'react-native';
 
 export default class HomePage extends React.Component {
   static navigationOptions = {
@@ -31,7 +31,7 @@ export default class HomePage extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View style={{ flex: 1}}>
         <FlatList data = {this.state.cloths} 
                   renderItem={({item}) => {
                   return <HomeListCell item = {item} navigation={this.props.navigation}/>;
@@ -54,12 +54,17 @@ class HomeListCell extends React.PureComponent{
   };
 
   render(){
+    let pic = {
+      uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
+    };
     return(
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <TouchableOpacity onPress={this._handlePressedItem}> 
-            <Text> {this.props.item} </Text>
+        <TouchableOpacity onPress={this._handlePressedItem} style={{ flex: 1, flexDirection: 'row' }}> 
+            <Image source={pic} style={{width: (4 / 3.) *110 , height: 110}} />
+            <View style = {{flex:1 ,flexDirection:'column'}}>
+              <Text> {this.props.item[0]} </Text>
+              <Text> {this.props.item[1]} </Text>
+            </View>
          </TouchableOpacity>
-      </View>
     );
   }
 
