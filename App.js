@@ -11,8 +11,8 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import { createStackNavigator, createAppContainer } from "react-navigation";
 
-import HomePage from './HomePage';
-import ScorePage from './ScorePage';
+import HomePage from './Pages/HomePage';
+import ScorePage from './Pages/ScorePage';
 
 
 const AppNavigator = createStackNavigator({
