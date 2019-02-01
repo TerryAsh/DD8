@@ -1,22 +1,25 @@
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import { WebView } from 'react-native';
 
 export default class ScorePage extends React.Component {
   static navigationOptions = ({navigation})=> {
-  	const item = navigation.getParam('name',[]);
-  	return {title: item[0],
-  	};
+  	const item = navigation.getParam('match',{'id':"1"});
+  	let url = "http://vip.win0168.com/AsianOdds_n.aspx?id=" + item.id;
+  	return {title: 'nmd',
+			match :item
+  	       };
   };
 
   render() {
   	const navigation = this.props.navigation;
-  	let username = navigation.getParam('name','defaultName1');
-
+  	const item = navigation.getParam('match',{'id':"1"});
+	let uri = 'http://vip.win0168.com/AsianOdds_n.aspx?id=' + item.id;
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Blink name = {username}/>
-      </View>
+    	<WebView  source={{uri:uri}}
+                  style={{width:'100%',height:'100%'}}>
+
+		</WebView>
     );
   }
  }
