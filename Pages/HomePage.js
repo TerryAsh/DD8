@@ -1,6 +1,6 @@
 
 import React, {Component} from 'react';
-import {TouchableOpacity,FlatList ,Platform, Image,StyleSheet, Text, View,Button} from 'react-native';
+import {TouchableOpacity,FlatList ,Dimensions, Image,StyleSheet, Text, View,Button} from 'react-native';
 
 export default class HomePage extends React.Component {
   static navigationOptions = {
@@ -38,12 +38,27 @@ export default class HomePage extends React.Component {
       for (let i = 0; i < cloths.length ; i++) {
         let subs = cloths[i].split('^');
         let data = subs[3];
+        //
         var t = new Date(data.substr(0, 4), parseInt(data.substr(4, 2)) - 1, data.substr(6, 2), data.substr(8, 2), data.substr(10, 2), data.substr(10, 2));
+        var timeString = new String();
+        //hour part
+        if (t.getHours() < 10){
+            timeString += '0';
+        }
+        timeString += t.getHours();
+        //seprater by ":"
+        timeString += ':'
+          //min part
+          if (t.getMinutes() < 10){
+              timeString += '0';
+          }
+          timeString += t.getMinutes();
+
         let m = {
             'home': subs[5],
             'guest': subs[6],
             'id': subs[0],
-            'time': t.getHours() + ':' +t.getMinutes()
+            'time': timeString
         }
         ms.push(m);
       }
@@ -58,7 +73,6 @@ export default class HomePage extends React.Component {
       <View style={{ flex: 1}}>
 
         <FlatList data = {this.state.cloths}
-
                   renderItem={({item}) => {
                   return <HomeListCell style={{heigth: 45}} item = {item} navigation={this.props.navigation}/>;
                   }}
@@ -80,31 +94,32 @@ class HomeListCell extends React.PureComponent{
   };
 
   render(){
-    let pic = {
-      uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
-    };
-    return(
-        <TouchableOpacity onPress={this._handlePressedItem} style={{ flex: 1, flexDirection: 'row',}}>
-            <View style = {styles.cell}>
-                <Text styles = {{width:33}}> {this.props.item.home} </Text>
-                <Text> {this.props.item.time} </Text>
-                <Text> {this.props.item.guest} </Text>
-            </View>
-         </TouchableOpacity>
-    );
+      let screenWidth =  Dimensions.get('window').width;
+      let textWidth = Dimensions.get('window').width / 3.;
+
+      return <TouchableOpacity onPress={this._handlePressedItem} style={{flex: 1, flexDirection: 'column'}}>
+          <View style={styles.cell}>
+              <Text style={{width: textWidth, textAlign: 'left',paddingLeft:15}}> {this.props.item.home} </Text>
+              <Text style={{width: textWidth, textAlign: 'center'}}> {this.props.item.time} </Text>
+              <Text style={{width: textWidth, textAlign: 'right',paddingRight:15}}> {this.props.item.guest} </Text>
+          </View>
+          <View style={{backgroundColor: 'blue', width: screenWidth, heigth: 1}}>
+          </View>
+      </TouchableOpacity>;
   }
 
 }
 
+
+let screenWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
     cell:{
         paddingTop: 22,
         paddingBottom:22,
         flex:1 ,
         flexDirection:'row',
-        justifyContent : 'space-between'
     },
-    list:{
-
-    }
+    cellText:{
+      width:screenWidth /3.
+    },
 });
