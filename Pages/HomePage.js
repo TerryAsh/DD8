@@ -107,19 +107,13 @@ class HomeListCell extends React.PureComponent{
           </View>
       </TouchableOpacity>;
   }
-
 }
 
-
-let screenWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
     cell:{
         paddingTop: 22,
         paddingBottom:22,
         flex:1 ,
         flexDirection:'row',
-    },
-    cellText:{
-      width:screenWidth /3.
-    },
+    }
 });
