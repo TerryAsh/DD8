@@ -1,7 +1,7 @@
 
 import React, {Component} from 'react';
-import {TouchableOpacity,FlatList ,Dimensions, Image,StyleSheet, Text, View,Button} from 'react-native';
-
+import {TouchableOpacity,FlatList ,Dimensions, Modal,StyleSheet, Text, View,Button, DeviceEventEmitter} from 'react-native';
+import LoginPage from './LoginPage'
 export default class HomePage extends React.Component {
   static navigationOptions = {
     title: 'Welcome',
@@ -13,8 +13,16 @@ export default class HomePage extends React.Component {
                            'guest':'guest',
                             'id':'1',
                             time:"00:00"}],
-                  originText:""};
-    this.getCloths();
+                  hideModal:false};
+  }
+
+  componentDidMount(){
+      this.getCloths();
+      DeviceEventEmitter.addListener("AshOnLoginedNotify",(e)=>{
+          this.setState(preState =>{
+              return {hideModal:true};
+          });
+      });
   }
 
   async getCloths(){
@@ -71,7 +79,15 @@ export default class HomePage extends React.Component {
   render() {
     return (
       <View style={{ flex: 1}}>
-
+          <Modal
+              animationType='slide'           // 从底部滑入
+              transparent={false}             // 不透明
+              visible={!this.state.hideModal}    // 根据isModal决定是否显示
+              onRequestClose = {()=>{}}
+          >
+              <LoginPage
+              />
+          </Modal>
         <FlatList data = {this.state.cloths}
                   renderItem={({item}) => {
                   return <HomeListCell style={{heigth: 45}} item = {item} navigation={this.props.navigation}/>;
@@ -97,15 +113,17 @@ class HomeListCell extends React.PureComponent{
       let screenWidth =  Dimensions.get('window').width;
       let textWidth = Dimensions.get('window').width / 3.;
 
-      return <TouchableOpacity onPress={this._handlePressedItem} style={{flex: 1, flexDirection: 'column'}}>
-          <View style={styles.cell}>
-              <Text style={{width: textWidth, textAlign: 'left',paddingLeft:15}}> {this.props.item.home} </Text>
-              <Text style={{width: textWidth, textAlign: 'center'}}> {this.props.item.time} </Text>
-              <Text style={{width: textWidth, textAlign: 'right',paddingRight:15}}> {this.props.item.guest} </Text>
-          </View>
-          <View style={{backgroundColor: 'blue', width: screenWidth, heigth: 1}}>
-          </View>
-      </TouchableOpacity>;
+      return (
+          <TouchableOpacity onPress={this._handlePressedItem} style={{flex: 1, flexDirection: 'column'}}>
+            <View style={styles.cell}>
+              <Text style={{width:textWidth, textAlign: 'left',paddingLeft:15}}> {this.props.item.home} </Text>
+              <Text style={{textAlign: 'center'}}> {this.props.item.time} </Text>
+              <Text style={{width:textWidth ,textAlign: 'right',paddingRight:15}}> {this.props.item.guest} </Text>
+            </View>
+            <View style={{backgroundColor: 'blue', width: screenWidth, heigth: 1}}>
+             </View>
+        </TouchableOpacity>
+      );
   }
 }
 
@@ -115,5 +133,6 @@ const styles = StyleSheet.create({
         paddingBottom:22,
         flex:1 ,
         flexDirection:'row',
+        justifyContent:'space-between'
     }
 });
