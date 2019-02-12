@@ -2,6 +2,8 @@
 import React, {Component} from 'react';
 import {TouchableOpacity,FlatList ,Dimensions, Modal,StyleSheet, Text, View,Button, DeviceEventEmitter} from 'react-native';
 import LoginPage from './LoginPage'
+import Constants from '../Constants/Constants'
+
 export default class HomePage extends React.Component {
   static navigationOptions = {
     title: 'Welcome',
@@ -18,7 +20,7 @@ export default class HomePage extends React.Component {
 
   componentDidMount(){
       this.getCloths();
-      DeviceEventEmitter.addListener("AshOnLoginedNotify",(e)=>{
+      DeviceEventEmitter.addListener(Constants.Notifications.LoginSucceedNotification,(e)=>{
           this.setState(preState =>{
               return {hideModal:true};
           });

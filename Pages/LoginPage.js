@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {FlatList ,StyleSheet, Text, View,TextInput ,Button ,DeviceEventEmitter} from 'react-native';
+import Constants from '../Constants/Constants'
 
 export default class LoginPage extends React.Component{
     static navigationOptions = {
@@ -13,7 +14,7 @@ export default class LoginPage extends React.Component{
     }
     render(){
         return (
-            <View>
+            <View style = {{paddingTop:220}}>
                 <TextInput
                     placeholder="Name"
                     onChangeText = {(text)=>this.setState({name:text})}
@@ -28,9 +29,9 @@ export default class LoginPage extends React.Component{
                     secureTextEntry = {true}
                 />
                 <Button
-                    title = 'submit'
+                    title = 'Log in'
                     onPress = {()=>{
-                        DeviceEventEmitter.emit("AshOnLoginedNotify",{isOk:true});
+                        DeviceEventEmitter.emit(Constants.Notifications.LoginSucceedNotification,{isOk:true});
                     }}
                 />
             </View>
@@ -42,6 +43,6 @@ const styles = StyleSheet.create({
     textInput:{
         height:45,
         paddingLeft:15,
-        paddingRight:15
+        paddingRight:15,
     }
 });
